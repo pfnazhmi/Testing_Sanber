@@ -31,6 +31,24 @@ class TestLogin(unittest.TestCase):
         response_data = browser.current_url
         self.assertIn('appointment', response_data)
 
+    def test_a_fail_login_with_wrong_usernameAndPass(self):
+        # steps
+        browser = self.browser  # buka web browser
+        # buka situs
+        browser.get("https://katalon-demo-cura.herokuapp.com/profile.php#login")
+        browser.find_element(
+            By.ID, "txt-username").send_keys("pfnazhmi")  # isi username
+        browser.find_element(By.CSS_SELECTOR, "input#txt-password.form-control").send_keys(
+            "isPass?")  # isi password
+        # klik tombol sign in
+        browser.find_element(By.ID, "btn-login").click()
+
+        # Validasi
+        response_message = browser.find_element(
+            By.CSS_SELECTOR, "p.lead.text-danger").text
+        self.assertEqual(
+            response_message, 'Login failed! Please ensure the username and password are valid.')
+
     def tearDown(self):
         self.browser.close()
 
